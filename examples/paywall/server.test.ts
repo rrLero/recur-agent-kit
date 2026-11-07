@@ -1,6 +1,6 @@
 import type { AddressInfo } from "node:net";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createPaywallServer, ECHO_ROUTE } from "./server.ts";
+import { COMPANY_ROUTE, createPaywallServer, ECHO_ROUTE, sampleCompany } from "./server.ts";
 
 const CHALLENGE = 'Payment id="c1", method="solana", intent="subscription"';
 
@@ -38,7 +38,23 @@ describe("example paywall", () => {
     );
   });
 
-  it("serves only the echo route", async () => {
+  it("answers an unpaid company lookup with Recur's 402 challenge", async () => {
+    const { recur, url } = await start();
+    const response = await fetch(`${url}${COMPANY_ROUTE}0000123456`);
+    expect(response.status).toBe(402);
+    expect(response.headers.get("www-authenticate")).toBe(CHALLENGE);
+    expect(recur).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns a sample company record for a 10-digit registry number", async () => {
+    const record = await sampleCompany(new Request(`http://api.test${COMPANY_ROUTE}0000123456`));
+    expect(record.status).toBe(200);
+    expect(await record.json()).toMatchObject({ krs: "0000123456", sample: true });
+    const missing = await sampleCompany(new Request(`http://api.test${COMPANY_ROUTE}42`));
+    expect(missing.status).toBe(404);
+  });
+
+  it("serves only the echo and company routes", async () => {
     const { recur, url } = await start();
     expect((await fetch(`${url}/v1/other`)).status).toBe(404);
     expect(recur).not.toHaveBeenCalled();
