@@ -49,21 +49,22 @@ RECUR_API_KEY=rk_test_… RECUR_PRODUCT_ID=… RECUR_API_URL=https://… pnpm pa
 AGENT_KEYPAIR=./agent.json pnpm agent
 ```
 
-A run on 2026-11-07, with a fresh agent wallet:
+A run on 2026-11-07, with a fresh agent wallet (the challenge id is shortened here):
 
 ```
-agent 6ZvP3xYFxsviY6LXQBric2QW4hymHc1t4ve1jjEwgtAQ, 0 SOL, budget 30 USDC a month
+agent 45nEeHSvKi6nYJiCMeiXyoj4TBKakcnYx5tkuwTtYdvM: 0 SOL, 1.5 USDC
+budget 30 USDC a month
 
 GET http://127.0.0.1:4901/v1/echo?say=hello
 ← 402 Payment Required
-  WWW-Authenticate: Payment id="8FjCAvZOpsUSi8Smtic9P7pP7ruBGL3U-0YGt5rpyq8", realm="127.0.0.1:4901", method="solana…
+  WWW-Authenticate: Payment id="…", realm="127.0.0.1:4901", method="solana…
 
-the agent subscribes and retries…
+recurAgent: pay if the price fits the budget, then retry…
 ← 200 OK  {"echo":"hello"}
-  Payment-Receipt: success, activation 5CAa5XNCTFvgidyG63UDRM4H4kjNW5MBLb8b8tywTezh3iXBgUm2CgRYPx8hy3QTSapFeTF9CjMXrrvdz6szVjYr
-  https://explorer.solana.com/tx/5CAa5XNCTFvgidyG63UDRM4H4kjNW5MBLb8b8tywTezh3iXBgUm2CgRYPx8hy3QTSapFeTF9CjMXrrvdz6szVjYr?cluster=devnet
+  Payment-Receipt: success, activation 2rmykwcGgTXtkQ11vKUB1AfbQB71LpcGSFB7HU2qt7xerEj5r47c2pKMuTDB5Q7PozFoaqQ1QoQwpHYAehLnVU46
+  https://explorer.solana.com/tx/2rmykwcGgTXtkQ11vKUB1AfbQB71LpcGSFB7HU2qt7xerEj5r47c2pKMuTDB5Q7PozFoaqQ1QoQwpHYAehLnVU46?cluster=devnet
 
-agent still holds 0 SOL
+agent still holds 0 SOL, 0.5 USDC
 ```
 
 Recur's keeper renewed the first two devnet agents' subscriptions a day later: 1 USDC from each agent, 0.9 to the merchant and 0.1 to the protocol treasury ([pay CLI agent](https://explorer.solana.com/tx/2BNhExAMwnoV2Fhr45qjxpd1rR3dEiTuePYvetn7vVm4vrwtcBRywXKAPriwQohqwdjpzNFEhJfEZePDMwsLJoc3?cluster=devnet), [kit-agent](https://explorer.solana.com/tx/DxQPYZFdeKaCmUnkJQ1mVuaSdGopVU4ZW7KVFqLzRnsAEfbfthRFMFTK3Fdz3zYL1kyWSsExbVixVszR9NKo1et?cluster=devnet)).
