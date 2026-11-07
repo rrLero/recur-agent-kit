@@ -1,0 +1,15 @@
+{
+  "name": "recur-agent-kit",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.8.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "pnpm -r build && pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "paywall": "pnpm --filter example-paywall start",
+    "agent": "pnpm --filter example-agent start"
+  }
+}

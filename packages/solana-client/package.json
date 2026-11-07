@@ -1,0 +1,22 @@
+{
+  "name": "@repo/solana-client",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./fixtures/lighthouse-mainnet": "./src/fixtures/lighthouse-mainnet.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@solana/kit": "8.5.0",
+    "@solana/program-client-core": "8.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "7.0.2",
+    "vitest": "5.0.3"
+  }
+}
